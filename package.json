@@ -1,0 +1,25 @@
+{
+  "name": "timeline",
+  "version": "1.0.0",
+  "description": "timeline data adapter for mongodb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "mongodb": "~2.0",
+    "express": "*",
+    "config": "*",
+    "log4js": "*",
+    "yargs": "*",
+    "moment": "*"
+  },
+  "dev-dependencies":{
+    "grunt": "*",
+    "grunt-contrib-standard": "*",
+    "jit-grunt": "*",
+    "time-grunt": "*"
+  },
+  "author": "selamanse",
+  "license": "ISC"
+}

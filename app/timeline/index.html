@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Project Timelapse</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Project Timelapse">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!-- Style-->
+    <style>
+     
+	  
+    </style>
+    <link rel='stylesheet' href='css/app.css' />
+    <link rel='stylesheet' media='screen and (max-width: 700px)' href='css/narrow.css' />
+	<link rel='stylesheet' media='screen and (min-width: 901px)' href='css/wide.css' />
+	
+	<link title="timeline-styles" rel="stylesheet" href="//cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+    <link title="app-styles" type="text/css" rel="stylesheet" href="css/app.css">
+	<link type="text/css" rel="stylesheet" href="css/bootstrap-datepicker.css">
+	<link type="text/css" rel="stylesheet" href="css/jquery.timepicker.css">
+	
+	<!-- HTML5 shim, for IE6-8 support of HTML elements--><!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="js/jquery.timepicker.min.js"></script>
+	<script type="text/javascript" src="js/datepair.min.js"></script>
+	<script type="text/javascript" src="js/jquery.datepair.min.js"></script>
+	
+	<script src="//cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
+	
+	
+	<script src="js/date.min.js"></script>
+	
+  </head>
+  <body>
+	  <div id="headmenu">
+	 
+	   <a href="#" class="events-loader">last 1 minute</a> | 
+	   <a href="#" class="events-loader">last 5 minute</a> | 
+	   <a href="#" class="events-loader">last 1 hour</a> | 
+	   <a href="#" class="events-loader">last 1 day</a>
+ <div id="datepairExample">
+    <input type="text" class="date start" />
+    <input type="text" class="time start" /> to <br />
+    
+    <input type="text" class="date end" />
+	<input type="text" class="time end" />
+	<input type="button" class="fireandforget" value="GO"/>
+</div>
+	  </div>
+	 <!-- BEGIN Timeline Embed -->
+      <div id="timeline-embed"></div>
+      <!-- END Timeline Embed-->
+	  <script src="js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+ #headmenu{
+	  	padding: 1px;
+		height: 20%;
+		width: 100%;
+		display: table;
+	  }
+	  
+	  #timeline-embed{
+		max-height: 82%;
+	  }

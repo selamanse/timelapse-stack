@@ -1,0 +1,30 @@
+
+
+ html, body {
+       height:100%;
+       padding: 0px;
+       margin: 0px;
+	   font-family: Arial, sans-serif;
+      }
+	  
+	  #headmenu{
+		
+		background-color: black;
+		display: block;
+		color: white;
+	  }
+	  
+	  #headmenu{
+	  	padding: 5px;
+		height: 15%;
+	  }
+	  
+	  #timeline-embed{
+		max-height: 90%;
+	  }
+	  
+	  #headmenu a.active, #headmenu a.visted, #headmenu a.hover, #headmenu a{
+		color: white;
+	  }
+	  
+	  

@@ -1,0 +1,16 @@
+[Unit]
+Description=Timelapse Service
+After=mongodb.service
+Requires=mongodb.service
+
+[Service]
+Type=simple
+WorkingDirectory=/usr/share/timelapse
+ExecStart=
+ExecStart=/usr/bin/node /usr/share/timelapse/index.js
+ExecStartPost=/usr/bin/fswebcam -c /usr/share/timelapse/.fswebcam.conf
+#RestartSec=5
+#Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

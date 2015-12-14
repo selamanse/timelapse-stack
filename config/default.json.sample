@@ -1,0 +1,12 @@
+{
+  "app": {
+    "service":{
+      "port": 3031
+    },
+    "db": {
+      "host": "localhost",
+      "port": 27017,
+      "name": "timeline"
+    }
+  }
+}
