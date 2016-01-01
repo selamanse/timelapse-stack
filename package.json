@@ -7,19 +7,22 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "mongodb": "~2.0",
+    "mongodb": "~2.1",
     "express": "*",
     "config": "*",
     "log4js": "*",
     "yargs": "*",
     "moment": "*"
   },
-  "dev-dependencies":{
+  "devDependencies":{
     "grunt": "*",
-    "grunt-contrib-standard": "*",
+    "grunt-standard": "*",
     "jit-grunt": "*",
     "time-grunt": "*"
   },
   "author": "selamanse",
-  "license": "ISC"
+  "license": "ISC",
+  "repository" : { "type" : "git", 
+		 "url" : "https://github.com/selamanse/timelapse-stack.git" 
+  }
 }
