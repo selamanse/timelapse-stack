@@ -1,11 +1,12 @@
 /*
 * Timeline Backend Service
-* Purpose: Storing Pictures to MongoDb and Serve them
+* Purpose: Storing Pictures to Cassandra and Serve them
 * Author: Selamanse <selamanse@scheinfrei.info>
+* Revision: 2016-04-20
 *
 */
 
-var MongoClient = require('mongodb').MongoClient;
+var cassandra = require('cassandra-driver');
 var assert = require('assert');
 var express = require('express');
 var config = require('config');
@@ -21,34 +22,26 @@ logger.debug("Load Database configuration");
 var appDb = config.get('app.db');
 logger.debug(appDb);
 
+const dbClient = new cassandra.Client({ contactPoints: [appDb.host], keyspace: appDb.keyspace});
+
+
 // Connection URL 
-var url = 'mongodb://'+appDb.host+':'+appDb.port+'/'+appDb.name;
 logger.debug("connecting to " + url);
 // Use connect method to connect to the Server 
-MongoClient.connect(url, function(err, db) {
+dbClient.connect(function(err, db) {
   assert.equal(null, err);
-  logger.info("Connected correctly to " + url);
+  logger.info("Connected correctly to " + appDb.host + "/" + appDb.keyspace);
     
   //create application
   var timeline = express();
   
   timeline.get('/', function (req, res) {
-    findDocuments(db, {}, function(docs) {
-          res.send(docs);
-    });    
+    res.send("timelapse-stack service")    
   })
     
   timeline.get('/getEvents', function (req, res) {
   
   	var tlQuery = {};
-  	
-  	tlQuery.idx_path = { '$exists': true };
-  	tlQuery.idx_path_medium = { '$exists': true };
-  	tlQuery.idx_path_small = { '$exists': true };
-  	tlQuery.date = { '$exists': true };
-  	tlQuery.time = { '$exists': true };
-  	tlQuery.second = { '$exists': true };
-    tlQuery.unixtime = { '$exists': true };
   	
   	if (!req.query.year && !req.query.max) {
   		var d = new Date();
@@ -62,54 +55,43 @@ MongoClient.connect(url, function(err, db) {
         tlQuery.unixtime = { '$gte': parseInt(req.query.min), '$lte': parseInt(req.query.max) };
     }
     
-    if (req.query.month) {
-  		tlQuery.month = req.query.month;
-    }
     
-    if (req.query.day) {
-  		tlQuery.day = req.query.day;
-    }
-    
-    if (req.query.hour) {
-  		tlQuery.hour = req.query.hour;
-    }
-    
-    if (req.query.minute) {
-  		tlQuery.minute = req.query.minute;
-    }
-    
-    if (req.query.second) {
-  		tlQuery.second = req.query.second;
-    }
-    
-    findDocuments(db, tlQuery, function(docs) {
-    
-    	var tlData = {};
-    	tlData.events = [];
-    	
-    	for (i = 0; i < docs.length; i++) { 
-    		var tDoc = docs[i];
+    tlData.events = [];
+
+
+    dbClient.eachRow('SELECT * from ' + appDb.keyspace + '.' + appDb.table + 
+    				' WHERE unixtime >= ' + parseInt(req.query.min) + 
+    				' AND unixtime <= ' + parseInt(req.query.max) + ';',
+  					function(n, row) {
+  					
     		var event = {
                 start_date:{
-                    year: tDoc.year,
-                    month: tDoc.month,
-                    day: tDoc.day,
-                    hour: tDoc.hour,
-                    minute: tDoc.minute,
-                    second: tDoc.second
+                    year: row.year,
+                    month: row.month,
+                    day: row.day,
+                    hour: row.hour,
+                    minute: row.minute,
+                    second: row.second
                 },
                 media: {
-                  url: "images/" + tDoc.idx_path_medium,
-                  caption: '<a href="images/' + tDoc.idx_path + '">' +  tDoc.date + ' ' + tDoc.time + '</a>'
+                  url: "images/" + row.idx_path_medium,
+                  caption: '<a href="images/' + row.idx_path + '">' +  row.date + ' ' + row.time + '</a>'
                 },
-                text: tDoc.date + " " + tDoc.time
+                text: row.date + " " + row.time
             }
     		
     		tlData.events.push(event);
-    		
-		}
-       	res.send(tlData);
-    });
+    
+  			},
+  			function (err) {
+    			if(err){
+    				console.log
+    			}
+  			}
+	);
+	
+        
+	res.json(tlData);
         
   })
   
@@ -124,7 +106,20 @@ MongoClient.connect(url, function(err, db) {
         
         res.send("adding:" + qry);
         
-        insertDocuments(db, qry);
+        const updateQry = 'UPDATE' + appDb.keyspace + '.' + appDb.table + 
+				' SET date=?,day=?,fs_path=?,idx_path=?,idx_path_medium=?,idx_path_small=?,hour=?,
+minute=?,month=?,second=?,time=?,tz=?,week=?,year=? WHERE device=? AND capturetime=?;'; 
+
+		const params = [qry.date,
+qry.day,qry.fs_path,qry.idx_path,qry.idx_path_medium,qry.idx_path_small,qry.hour,qry.minute,qry.month,qry.second,qry.time,qry.tz,qry.week,qry.year,qry.dev,qry.unixtime];
+
+		client.execute(updateQry, params, { prepare: true }, function(err) {
+  		if(err){
+  			console.log(JSON.stringify(err));
+ 			return true;
+  		}
+  			console.log('Row updated on the cluster');
+		});
     }
   })
    
@@ -141,6 +136,8 @@ var findDocuments = function(db, query, callback) {
   // Find some documents 
   logger.debug("running query: ");
   logger.debug(query);
+  
+  
   collection.find(query).toArray(function(err, docs) {
     assert.equal(err, null);
     //assert.equal(2, docs.length);
@@ -150,18 +147,3 @@ var findDocuments = function(db, query, callback) {
   });
 }
 
-var insertDocuments = function(db, params, callback) {
-  // Get the documents collection 
-  var collection = db.collection('timeline');
-  // Insert some documents 
-  collection.insert([
-    params
-  ], function(err, result) {
-    assert.equal(err, null);
-    //assert.equal(3, result.result.n);
-    logger.debug("Inserted " + result.ops.length + " documents into the document collection");
-    if (typeof callback == "function") {
-       callback(result);
-    }    
-  });
-}

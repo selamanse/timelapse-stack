@@ -1,13 +1,13 @@
 {
-  "name": "timeline",
-  "version": "1.0.0",
-  "description": "timeline data adapter for mongodb",
+  "name": "timelapse-stack",
+  "version": "1.2.0",
+  "description": "timelapse application backend",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "mongodb": "~2.1",
+    "cassandra": "~3.0",
     "express": "*",
     "config": "*",
     "log4js": "*",
@@ -21,7 +21,7 @@
     "time-grunt": "*"
   },
   "author": "selamanse",
-  "license": "ISC",
+  "license": "MIT",
   "repository" : { "type" : "git", 
 		 "url" : "https://github.com/selamanse/timelapse-stack.git" 
   }

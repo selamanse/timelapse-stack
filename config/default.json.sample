@@ -5,8 +5,9 @@
     },
     "db": {
       "host": "localhost",
-      "port": 27017,
-      "name": "timeline"
+      "port": 9042,
+      "keyspace": "timelapse",
+      "table": "captures_by_time"
     }
   }
 }
