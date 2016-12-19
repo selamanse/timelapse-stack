@@ -116,6 +116,7 @@ MongoClient.connect(url, function(err, db) {
   
   timeline.get('/add', function (req, res) {
     
+    logger.debug(req.query)
     if (!req.query.unixtime) {
         res.send("cannot add, missing time param");
     }else{

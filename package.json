@@ -1,27 +1,27 @@
 {
-  "name": "timeline",
-  "version": "1.0.0",
-  "description": "timeline data adapter for mongodb",
-  "main": "index.js",
+  "name": "timelapse-stack",
+  "version": "1.2.0",
+  "description": "timelapse-stack application and backend to capture stills from camera and visualize them as timelapse",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "mongodb": "~2.1",
-    "express": "*",
-    "config": "*",
-    "log4js": "*",
-    "yargs": "*",
-    "moment": "*"
+    "mongodb": "~2.2",
+    "express": "~4",
+    "config": "~1",
+    "log4js": "~1",
+    "yargs": "~6.5",
+    "moment": "~2.17"
   },
   "devDependencies":{
-    "grunt": "*",
-    "grunt-standard": "*",
-    "jit-grunt": "*",
-    "time-grunt": "*"
+    "grunt": "~1",
+    "grunt-standard": "~1",
+    "jit-grunt": "0.10.0",
+    "time-grunt": "1.4.0"
   },
   "author": "selamanse",
-  "license": "ISC",
+  "license": "MIT",
   "repository" : { "type" : "git", 
 		 "url" : "https://github.com/selamanse/timelapse-stack.git" 
   }
